@@ -11,7 +11,7 @@
 #define PASSEMOTES  0x10    // Mob has a cortical borer or holders inside of it that need to see emotes.
 #define LEAPING     0x16
 #define GODMODE     0x1000
-#define FAKEDEATH   0x2000  // Replaces stuff like changeling.changeling_fakedeath.
+#define FAKEDEATH   0x2000  // Player is in a deathlike state that fools medical scanners. They cannot move, act, or speak.
 #define NO_ANTAG    0x4000  // Players are restricted from gaining antag roles when occupying this mob
 #define NOTARGET    0x8000  // Player is invisible to all simple mobs
 
@@ -328,7 +328,7 @@
 #define RESTRICTED_SPECIES   list(SPECIES_VOX, SPECIES_ALIEN, SPECIES_GOLEM, SPECIES_MANTID_GYNE, SPECIES_MANTID_ALATE, SPECIES_MONARCH_WORKER, SPECIES_MONARCH_QUEEN)
 #define HUMAN_SPECIES        list(SPECIES_HUMAN, SPECIES_VATGROWN, SPECIES_SPACER, SPECIES_GRAVWORLDER, SPECIES_MULE)
 
-#define SPECIES_NABBER         "giant armoured serpentid"
+#define SPECIES_NABBER         "Giant armoured serpentid"
 #define SPECIES_MONARCH_WORKER "Monarch Serpentid Worker"
 #define SPECIES_MONARCH_QUEEN  "Monarch Serpentid Queen"
 #define SPECIES_MANTID_ALATE   "Kharmaan Alate"
@@ -427,3 +427,5 @@
 #define DO_INCAPACITATED     (-3)
 
 #define FAKE_INVIS_ALPHA_THRESHOLD 127 // If something's alpha var is at or below this number, certain things will pretend it is invisible.
+
+#define ADJUSTED_GLIDE_SIZE(DELAY) (CEILING((WORLD_ICON_SIZE / max((DELAY), world.tick_lag) * world.tick_lag) - world.tick_lag, 1) + (config.glide_size_delay))

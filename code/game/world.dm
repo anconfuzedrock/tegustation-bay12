@@ -79,9 +79,6 @@ GLOBAL_VAR(href_logfile)
 	diary = file("data/logs/[date_string].log")
 	to_file(diary, "[log_end]\n[log_end]\nStarting up. (ID: [game_id]) [time2text(world.timeofday, "hh:mm.ss")][log_end]\n---------------------[log_end]")
 
-	if(config && config.server_name != null && config.server_suffix && world.port > 0)
-		config.server_name += " #[(world.port % 1000) / 100]"
-
 	if(config && config.log_runtime)
 		var/runtime_log = file("data/logs/runtime/[date_string]_[time2text(world.timeofday, "hh:mm")]_[game_id].log")
 		to_file(runtime_log, "Game [game_id] starting up at [time2text(world.timeofday, "hh:mm.ss")]")
@@ -93,6 +90,10 @@ GLOBAL_VAR(href_logfile)
 	if(byond_version < RECOMMENDED_VERSION)
 		to_world_log("Your server's byond version does not meet the recommended requirements for this server. Please update BYOND")
 
+	// Database masterinit
+	SSdbcore.CheckSchemaVersion()
+	SSdbcore.SetRoundID()
+
 	callHook("startup")
 
 	//TGS
@@ -102,6 +103,9 @@ GLOBAL_VAR(href_logfile)
 	//Emergency Fix
 	load_mods()
 	//end-emergency fix
+
+	// Load the list of trusted players
+	load_trusted_players()
 
 	. = ..()
 
@@ -537,46 +541,45 @@ GLOBAL_VAR_INIT(world_topic_last, world.timeofday)
 	var/s = ""
 
 	if (config && config.server_name)
-		s += "<b>[config.server_name]</b> &#8212; "
+		s += "<b>[config.server_name]</b>"
 
-	s += "<b>[station_name()]</b>";
-	s += " ("
-	s += "<a href=\"https://forums.baystation12.net/\">" //Change this to wherever you want the hub to link to.
-	s += "Forums"  //Replace this with something else. Or ever better, delete it and uncomment the game version.
-	s += "</a>"
-	s += ")"
+	if (config && config.server_suffix)
+		s += " &#8212; <b>[config.server_suffix]</b>"
 
-	var/list/features = list()
+	if(config && config.server_desc)
+		s += "<br>"
+		s += config.server_desc
 
+	s += "<br>"
 	if(SSticker.master_mode)
-		features += SSticker.master_mode
+		s += "Gamemode: [SSticker.master_mode]"
 	else
-		features += "<b>STARTING</b>"
+		s += "<b>ROUND STARTING</b>"
 
 	if (!config.enter_allowed)
-		features += "closed"
+		s += "<br>"
+		s += "Server closed"
 
-	features += config.abandon_allowed ? "respawn" : "no respawn"
-
-	if (config && config.allow_vote_mode)
-		features += "vote"
-
-	var/n = 0
-	for (var/mob/M in GLOB.player_list)
-		if (M.client)
-			n++
-
-	if (n > 1)
-		features += "~[n] players"
-	else if (n > 0)
-		features += "~[n] player"
-
+	s += "<br>"
+	s += config.abandon_allowed ? "Respawn allowed" : "No respawn"
 
 	if (config && config.hostedby)
-		features += "hosted by <b>[config.hostedby]</b>"
+		s += "<br>"
+		s += "Hosted by <b>[config.hostedby]</b>"
 
-	if (features)
-		s += ": [jointext(features, ", ")]"
+	// Forum link
+	if(config && config.forumurl)
+		s += "<br>"
+		s += "<a href=\"[config.forumurl]\">"
+		s += "Forums"
+		s += "</a>"
+
+	// Discord link
+	if(config && config.discordurl)
+		s += "<br>"
+		s += "<a href=\"[config.discordurl]\">"
+		s += "Discord"
+		s += "</a>"
 
 	/* does this help? I do not know */
 	if (src.status != s)
@@ -590,18 +593,12 @@ GLOBAL_VAR_INIT(world_topic_last, world.timeofday)
 		GLOB.log_directory += "[replacetext(time_stamp(), ":", ".")]"
 
 	GLOB.world_qdel_log = file("[GLOB.log_directory]/qdel.log")
+	GLOB.query_debug_log = file("[GLOB.log_directory]/sql.log")
 	to_file(GLOB.world_qdel_log, "\n\nStarting up round ID [game_id]. [time_stamp()]\n---------------------")
 
 #define FAILED_DB_CONNECTION_CUTOFF 5
 var/failed_db_connections = 0
 var/failed_old_db_connections = 0
-
-/hook/startup/proc/connectDB()
-	if(!setup_database_connection())
-		to_world_log("Your server failed to establish a connection with the feedback database.")
-	else
-		to_world_log("Feedback database connection established.")
-	return 1
 
 proc/setup_database_connection()
 
@@ -635,14 +632,6 @@ proc/establish_db_connection()
 		return setup_database_connection()
 	else
 		return 1
-
-
-/hook/startup/proc/connectOldDB()
-	if(!setup_old_database_connection())
-		to_world_log("Your server failed to establish a connection with the SQL database.")
-	else
-		to_world_log("SQL database connection established.")
-	return 1
 
 //These two procs are for the old database, while it's being phased out. See the tgstation.sql file in the SQL folder for more information.
 proc/setup_old_database_connection()

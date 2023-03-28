@@ -93,7 +93,8 @@ var/global/floorIsLava = 0
 			<A href='?src=\ref[src];mute=\ref[M];mute_type=[MUTE_AOOC]'><font color='[(muted & MUTE_AOOC)?"red":"blue"]'>AOOC</font></a> |
 			<A href='?src=\ref[src];mute=\ref[M];mute_type=[MUTE_PRAY]'><font color='[(muted & MUTE_PRAY)?"red":"blue"]'>PRAY</font></a> |
 			<A href='?src=\ref[src];mute=\ref[M];mute_type=[MUTE_ADMINHELP]'><font color='[(muted & MUTE_ADMINHELP)?"red":"blue"]'>ADMINHELP</font></a> |
-			<A href='?src=\ref[src];mute=\ref[M];mute_type=[MUTE_DEADCHAT]'><font color='[(muted & MUTE_DEADCHAT)?"red":"blue"]'>DEADCHAT</font></a>\]
+			<A href='?src=\ref[src];mute=\ref[M];mute_type=[MUTE_DEADCHAT]'><font color='[(muted & MUTE_DEADCHAT)?"red":"blue"]'>DEADCHAT</font></a>\] |
+			<A href='?src=\ref[src];mute=\ref[M];mute_type=[MUTE_MENTOR]'><font_color='[(muted & MUTE_MENTOR)?"red":"blue"]'MENTOR</font></a>\]
 			(<A href='?src=\ref[src];mute=\ref[M];mute_type=[MUTE_ALL]'><font color='[(muted & MUTE_ALL)?"red":"blue"]'>toggle all</font></a>)
 		"}
 		body += "<br><br><b>Staff Warning:</b> [M.client.staffwarn ? M.client.staffwarn : "No"]<br>"
@@ -781,6 +782,22 @@ var/global/floorIsLava = 0
 	log_and_message_admins("toggled LOOC.")
 	SSstatistics.add_field_details("admin_verb","TLOOC") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
+
+/datum/admins/proc/endnow()
+	set category = "Server"
+	set desc = "round goes bye bye"
+	set name = "End Round"
+
+	var/check = alert("This will immediately end the round. Are you sure about this?", "End Game", "Yes", "No") == "Yes"
+
+	if (!check)
+		return
+
+	if (GAME_STATE > RUNLEVEL_LOBBY)
+		SSticker.forced_end = TRUE
+		log_and_message_admins("has ended the round.")
+	else
+		to_chat(usr,FONT_LARGE(SPAN_WARNING("You cannot end the round before it's begun!")))
 
 /datum/admins/proc/toggledsay()
 	set category = "Server"

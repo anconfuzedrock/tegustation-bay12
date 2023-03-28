@@ -205,6 +205,11 @@
 				var/mob/living/L = usr
 				L.resist()
 
+		if("rest")
+			if(isliving(usr))
+				var/mob/living/L = usr
+				L.lay_down()
+
 		if("Reset Machine")
 			usr.unset_machine()
 		if("internal")
@@ -293,7 +298,7 @@
 			usr.stop_pulling()
 		if("throw")
 			if(!usr.stat && isturf(usr.loc) && !usr.restrained())
-				usr:toggle_throw_mode()
+				usr.toggle_throw_mode()
 		if("drop")
 			if(usr.client)
 				usr.client.drop_item()
@@ -316,11 +321,13 @@
 					to_chat(R, "You haven't selected a module yet.")
 
 		if("radio")
-			if(issilicon(usr))
-				usr:radio_menu()
+			if(isrobot(usr))
+				var/mob/living/silicon/robot/R = usr
+				R.radio_menu()
 		if("panel")
-			if(issilicon(usr))
-				usr:installed_modules()
+			if(isrobot(usr))
+				var/mob/living/silicon/robot/R = usr
+				R.installed_modules()
 
 		if("store")
 			if(isrobot(usr))
@@ -332,16 +339,19 @@
 					to_chat(R, "You haven't selected a module yet.")
 
 		if("module1")
-			if(istype(usr, /mob/living/silicon/robot))
-				usr:toggle_module(1)
+			if(isrobot(usr))
+				var/mob/living/silicon/robot/R = usr
+				R.toggle_module(1)
 
 		if("module2")
-			if(istype(usr, /mob/living/silicon/robot))
-				usr:toggle_module(2)
+			if(isrobot(usr))
+				var/mob/living/silicon/robot/R = usr
+				R.toggle_module(2)
 
 		if("module3")
-			if(istype(usr, /mob/living/silicon/robot))
-				usr:toggle_module(3)
+			if(isrobot(usr))
+				var/mob/living/silicon/robot/R = usr
+				R.toggle_module(3)
 		else
 			return 0
 	return 1

@@ -389,22 +389,22 @@ BLIND     // can't see anything
 		slot_l_hand_str = 'icons/mob/onmob/items/lefthand_hats.dmi',
 		slot_r_hand_str = 'icons/mob/onmob/items/righthand_hats.dmi',
 		)
+	sprite_sheets = list(
+		SPECIES_VOX = 'icons/mob/species/vox/onmob_head_vox.dmi',
+		SPECIES_VOX_ARMALIS = 'icons/mob/species/vox/onmob_head_vox_armalis.dmi',
+		SPECIES_UNATHI = 'icons/mob/species/unathi/generated/onmob_head_unathi.dmi',
+		SPECIES_NABBER = 'icons/mob/species/nabber/onmob_head_gas.dmi'
+		)
 	body_parts_covered = HEAD
 	slot_flags = SLOT_HEAD
 	w_class = ITEM_SIZE_SMALL
+	blood_overlay_type = "helmetblood"
 
 	var/image/light_overlay_image
 	var/light_overlay = "helmet_light"
 	var/light_applied
 	var/brightness_on
 	var/on = 0
-
-	sprite_sheets = list(
-		SPECIES_VOX = 'icons/mob/species/vox/onmob_head_vox.dmi',
-		SPECIES_VOX_ARMALIS = 'icons/mob/species/vox/onmob_head_vox_armalis.dmi',
-		SPECIES_UNATHI = 'icons/mob/species/unathi/generated/onmob_head_unathi.dmi',
-		)
-	blood_overlay_type = "helmetblood"
 
 /obj/item/clothing/head/equipped(var/mob/user, var/slot)
 	light_overlay_image = null
@@ -725,14 +725,11 @@ BLIND     // can't see anything
 	return TRUE
 
 /obj/item/clothing/shoes/proc/handle_movement(var/turf/walking, var/running)
-	if (attached_cuffs && running)
-		if (attached_cuffs.health)
-			attached_cuffs.health -= 1
-			if (attached_cuffs.health < 1)
-				visible_message(SPAN_WARNING("\The [attached_cuffs] attached to \the [src] snap and fall away!"), range = 1)
-				verbs -= /obj/item/clothing/shoes/proc/remove_cuffs
-				slowdown_per_slot[slot_shoes] -= attached_cuffs.elastic ? 10 : 15
-				QDEL_NULL(attached_cuffs)
+	if(running && attached_cuffs?.damage_health(1))
+		visible_message(SPAN_WARNING("\The [attached_cuffs] attached to \the [src] snap and fall away!"), range = 1)
+		verbs -= /obj/item/clothing/shoes/proc/remove_cuffs
+		slowdown_per_slot[slot_shoes] -= attached_cuffs.elastic ? 10 : 15
+		QDEL_NULL(attached_cuffs)
 	return
 
 /obj/item/clothing/shoes/update_clothing_icon()
@@ -810,9 +807,18 @@ BLIND     // can't see anything
 	var/displays_id = 1
 	var/rolled_down = -1 //0 = unrolled, 1 = rolled, -1 = cannot be toggled
 	var/rolled_sleeves = -1 //0 = unrolled, 1 = rolled, -1 = cannot be toggled
+	species_restricted = list(
+		"exclude",
+		SPECIES_ADHERENT,
+		SPECIES_NABBER,
+		SPECIES_MANTID_ALATE,
+		SPECIES_MANTID_GYNE,
+		SPECIES_MONARCH_QUEEN
+	)
 	sprite_sheets = list(
 		SPECIES_VOX = 'icons/mob/species/vox/onmob_under_vox.dmi',
 		SPECIES_VOX_ARMALIS = 'icons/mob/species/vox/onmob_under_vox_armalis.dmi',
+		SPECIES_ADHERENT = 'icons/mob/species/adherent/onmob_under_adherent.dmi',
 		SPECIES_NABBER = 'icons/mob/species/nabber/onmob_under_gas.dmi',
 		SPECIES_MONARCH_QUEEN = 'icons/mob/species/nabber/msq/onmob_under_msq.dmi',
 		SPECIES_UNATHI = 'icons/mob/species/unathi/generated/onmob_under_unathi.dmi',

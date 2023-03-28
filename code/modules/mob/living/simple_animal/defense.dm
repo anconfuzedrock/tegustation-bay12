@@ -18,7 +18,11 @@
 	bullet_impact_visuals(Proj)
 	adjustBruteLoss(damage)
 	Proj.on_hit(src)
-	return 0
+
+	if (ai_holder && Proj.firer)
+		ai_holder.react_to_attack(Proj.firer)
+
+	return FALSE
 
 /mob/living/simple_animal/attack_hand(mob/living/carbon/human/M as mob)
 	..()
@@ -33,7 +37,6 @@
 		if(I_DISARM)
 			M.visible_message(SPAN_NOTICE("[M] [response_disarm] \the [src]."))
 			M.do_attack_animation(src)
-			//TODO: Push the mob away or something
 
 		if(I_HURT)
 			var/dealt_damage = harm_intent_damage
@@ -48,6 +51,9 @@
 			adjustBruteLoss(dealt_damage)
 			M.visible_message(SPAN_WARNING("[M] [harm_verb] \the [src]!"))
 			M.do_attack_animation(src)
+
+			if (ai_holder)
+				ai_holder.react_to_attack(M)
 
 	return
 
@@ -81,7 +87,7 @@
 			var/time_to_butcher = (mob_size)
 			to_chat(user, SPAN_NOTICE("You begin harvesting \the [src]."))
 			if(do_after(user, time_to_butcher, src, do_flags = DO_DEFAULT & ~DO_BOTH_CAN_TURN))
-				if(prob(user.skill_fail_chance(SKILL_COOKING, 60, SKILL_ADEPT)))
+				if(prob(user.skill_fail_chance(SKILL_COOKING, 60, SKILL_TRAINED)))
 					to_chat(user, SPAN_NOTICE("You botch harvesting \the [src], and ruin some of the meat in the process."))
 					subtract_meat(user)
 					return
@@ -98,6 +104,9 @@
 			visible_message(SPAN_NOTICE("[user] gently taps [src] with \the [O]."))
 		else
 			O.attack(src, user, user.zone_sel ? user.zone_sel.selecting : ran_zone())
+
+			if (ai_holder)
+				ai_holder.react_to_attack(user)
 
 /mob/living/simple_animal/hit_with_weapon(obj/item/O, mob/living/user, var/effective_force, var/hit_zone)
 
@@ -118,6 +127,9 @@
 	adjustBruteLoss(damage)
 	if(O.edge || O.sharp)
 		adjustBleedTicks(damage)
+
+	if (ai_holder)
+		ai_holder.react_to_attack(user)
 
 	return TRUE
 

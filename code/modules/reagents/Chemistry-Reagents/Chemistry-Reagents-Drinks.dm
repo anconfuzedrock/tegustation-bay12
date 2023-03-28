@@ -68,7 +68,7 @@
 
 /datum/reagent/drink/juice/carrot/affect_ingest(var/mob/living/carbon/M, var/alien, var/removed)
 	..()
-	M.reagents.add_reagent(/datum/reagent/imidazoline, removed * 0.2)
+	M.reagents.add_reagent(/datum/reagent/medicine/imidazoline, removed * 0.2)
 
 /datum/reagent/drink/juice/grape
 	name = "Grape Juice"
@@ -1394,11 +1394,12 @@
 	glass_name = "kzkzaa"
 	glass_desc = "A glass of Kzkzaa, fish extract, commonly drank on Moghes."
 
-/datum/reagent/drink/alien/mumbaksting
+/datum/reagent/ethanol/alien/mumbaksting
 	name = "Mumbak Sting"
 	description = "A drink made from the venom of the Yuum."
 	taste_description = "harsh and stinging sweetness"
 	color = "#550000"
+	strength = 10
 	glass_name = "Mumbak sting"
 	glass_desc = "A drink made from the venom of the Yuum."
 
@@ -1407,7 +1408,7 @@
 	description = "Wine made from various fruits from the swamps of Moghes."
 	taste_description = "swampy fruit"
 	color = "#6b596b"
-	strength = 10
+	strength = 15
 	glass_name = "wasgaelhi"
 	glass_desc = "Wine made from various fruits from the swamps of Moghes."
 
@@ -1418,7 +1419,7 @@
 	color = "#0e0900"
 	glass_name = "skrianhi tea"
 	glass_desc = "A blend of teas from Moghes, commonly drank by Unathi."
-	
+
 ///// new shit /////
 /datum/reagent/drink/tegu/shirley
 	name = "Shirley Temple"
@@ -1434,8 +1435,8 @@
 	name = "Shirley Temple"
 	result = /datum/reagent/drink/tegu/shirley
 	required_reagents = list(/datum/reagent/drink/grenadine = 1, /datum/reagent/drink/juice/orange = 2, /datum/reagent/drink/space_up = 2)
-	result_amount = 5 
-	
+	result_amount = 5
+
 /datum/reagent/drink/milk/goat
 	name = "Goat Milk"
 	description = "An opaque white liquid produced by the mammary glands of goats."

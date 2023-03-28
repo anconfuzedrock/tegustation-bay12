@@ -263,6 +263,10 @@
 	max_ammo = 40
 	multiple_sprites = 1
 
+/obj/item/ammo_magazine/proto_smg/hp
+	name = "submachine gun magazine (HP)"
+	ammo_type = /obj/item/ammo_casing/flechette/hp
+
 /obj/item/ammo_magazine/gyrojet
 	name = "microrocket magazine"
 	icon_state = "gyrojet"
@@ -325,4 +329,14 @@
 	ammo_type = /obj/item/ammo_casing/cap
 	matter = list(MATERIAL_STEEL = 600)
 	max_ammo = 7
+	multiple_sprites = 1
+
+/obj/item/ammo_magazine/t12
+	name = "T12 magazine"
+	icon_state = "t12"
+	mag_type = MAGAZINE
+	caliber = CALIBER_T12
+	matter = list(MATERIAL_STEEL = 2400)
+	ammo_type = /obj/item/ammo_casing/rifle/t12
+	max_ammo = 50
 	multiple_sprites = 1

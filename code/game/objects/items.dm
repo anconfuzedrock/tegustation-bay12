@@ -7,7 +7,6 @@
 	var/image/blood_overlay = null //this saves our blood splatter overlay, which will be processed not to go over the edges of the sprite
 	var/randpixel = 6
 	var/r_speed = 1.0
-	var/health = null
 	var/burn_point = null
 	var/burning = null
 	var/hitsound = "swing_hit"
@@ -118,6 +117,7 @@
 
 /obj/item/device
 	icon = 'icons/obj/device.dmi'
+	health_resistances = DAMAGE_RESIST_ELECTRICAL
 
 //Checks if the item is being held by a mob, and if so, updates the held icons
 /obj/item/proc/update_twohanding()
@@ -154,6 +154,7 @@
 	return FALSE
 
 /obj/item/ex_act(severity)
+	..()
 	switch(severity)
 		if(1)
 			qdel(src)
@@ -535,7 +536,7 @@ var/list/global/slot_flags_enumeration = list(
 /obj/item/proc/get_parry_chance(mob/user)
 	. = base_parry_chance
 	if(user)
-		if(base_parry_chance || user.skill_check(SKILL_COMBAT, SKILL_ADEPT))
+		if(base_parry_chance || user.skill_check(SKILL_COMBAT, SKILL_TRAINED))
 			. += 10 * (user.get_skill_value(SKILL_COMBAT) - SKILL_BASIC)
 
 /obj/item/proc/on_disarm_attempt(mob/target, mob/living/attacker)
@@ -855,6 +856,10 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 
 /obj/item/lava_act()
 	. = (!throwing) ? ..() : FALSE
+
+/// Called when this item is microwaved. Return an instance of an atom to add it to the microwave's list.
+/obj/item/proc/microwave_act(obj/machinery/microwave/M)
+	return
 
 /obj/item/proc/has_embedded()
 	return

@@ -58,6 +58,9 @@
 	icon_state = "flechette-casing"
 	spent_icon = "flechette-casing-spent"
 
+/obj/item/ammo_casing/flechette/hp
+	projectile_type = /obj/item/projectile/bullet/flechette/hp
+
 /obj/item/ammo_casing/shotgun
 	name = "shotgun slug"
 	desc = "A shotgun slug."
@@ -156,6 +159,10 @@
 	desc = "A military rifle practice bullet casing."
 	projectile_type = /obj/item/projectile/bullet/rifle/military/practice
 	icon_state = "rifle_mil_p"
+
+/obj/item/ammo_casing/rifle/t12
+	caliber = CALIBER_T12
+	projectile_type = /obj/item/projectile/bullet/rifle/t12
 
 /obj/item/ammo_casing/rocket
 	name = "rocket shell"

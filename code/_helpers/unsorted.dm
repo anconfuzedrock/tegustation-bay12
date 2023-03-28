@@ -36,6 +36,22 @@
 /proc/dd_range(var/low, var/high, var/num)
 	return max(low,min(high,num))
 
+/proc/get_projectile_angle(atom/source, atom/target)
+	var/sx = source.x * world.icon_size
+	var/sy = source.y * world.icon_size
+	var/tx = target.x * world.icon_size
+	var/ty = target.y * world.icon_size
+	var/atom/movable/AM
+	if(ismovable(source))
+		AM = source
+		sx += AM.step_x
+		sy += AM.step_y
+	if(ismovable(target))
+		AM = target
+		tx += AM.step_x
+		ty += AM.step_y
+	return SIMPLIFY_DEGREES(arctan(ty - sy, tx - sx))
+
 //Returns whether or not A is the middle most value
 /proc/InRange(var/A, var/lower, var/upper)
 	if(A < lower) return 0
@@ -756,7 +772,7 @@ proc/DuplicateObject(obj/original, var/perfectcopy = 0 , var/sameloc = 0)
 
 					for(var/obj/O in T)
 
-						if(!istype(O,/obj) || !O.simulated)
+						if((!istype(O,/obj) || !O.simulated) && !istype(O,/obj/effect/landmark))
 							continue
 
 						objs += O
@@ -1119,3 +1135,45 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 	else
 		step(user.pulling, get_dir(user.pulling.loc, A))
 
+/proc/show_blurb(client/C, duration, blurb_text, fade_time = 5)
+	set waitfor = 0
+
+	if(!C)
+		return
+
+	var/style = "font-family: 'Fixedsys'; -dm-text-outline: 1 black; font-size: 11px;"
+	var/text = blurb_text
+	text = uppertext(text)
+
+	var/obj/effect/overlay/T = new()
+	T.maptext_height = 64
+	T.maptext_width = 448
+	T.layer = FLOAT_LAYER
+	T.plane = HUD_PLANE
+	T.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
+	T.screen_loc = "LEFT+1,BOTTOM+2"
+
+	C.screen += T
+	animate(T, alpha = 255, time = 10)
+	for(var/i = 1 to length(text)+1)
+		T.maptext = "<span style=\"[style]\">[copytext(text,1,i)] </span>"
+		sleep(1)
+
+	addtimer(CALLBACK(GLOBAL_PROC, .proc/fade_blurb, C, T, fade_time), duration)
+
+/proc/fade_blurb(client/C, obj/T, fade_time = 5)
+	animate(T, alpha = 0, time = fade_time)
+	sleep(fade_time)
+	C.screen -= T
+	qdel(T)
+
+/proc/show_global_blurb(duration, blurb_text, fade_time = 5) // Shows a blurb to every living player
+	for(var/mob/M in GLOB.player_list)
+		show_blurb(M.client, duration, blurb_text, fade_time)
+
+// Misc. ported from TG
+
+#define UNTIL(X) while(!(X)) stoplag()
+
+//datum may be null, but it does need to be a typed var
+#define NAMEOF(datum, X) (#X || ##datum.##X)

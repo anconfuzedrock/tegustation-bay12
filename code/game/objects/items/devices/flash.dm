@@ -80,8 +80,8 @@
 				if(flash_strength > 0)
 					M.flash_eyes(FLASH_PROTECTION_MODERATE - safety)
 					M.Stun(flash_strength / 2)
-					M.eye_blurry += flash_strength
-					M.confused += (flash_strength + 2)
+					M.eye_blurry = max(M.eye_blurry, flash_strength)
+					M.confused = max(M.confused, (flash_strength + 2))
 					if(flash_strength > 3)
 						M.drop_l_hand()
 						M.drop_r_hand()
@@ -126,11 +126,23 @@
 	if(!flashfail)
 		flick("[initial(icon_state)]_on", src)
 		if(!issilicon(M))
-			user.visible_message("<span class='disarm'>[user] blinds [M] with \the [src]!</span>")
+			M.interact_message(user,
+				SPAN_CLASS("disarm", "\The [user] blinds \the [M] with \the [src]!"),
+				SPAN_CLASS("disarm", "\The [user] blinds you with \the [src]!"),
+				SPAN_CLASS("disarm", "You blind \the [M] with \the [src]!")
+			)
 		else
-			user.visible_message("<span class='notice'>[user] overloads [M]'s sensors with \the [src]!</span>")
+			M.interact_message(user,
+				SPAN_CLASS("disarm", "\The [user] overloads \the [M]'s sensors with \the [src]!"),
+				SPAN_CLASS("disarm", "\The [user] overloads your sensors with \the [src]!"),
+				SPAN_CLASS("disarm", "You overload \the [M]'s sensors with \the [src]!")
+			)
 	else
-		user.visible_message("<span class='notice'>[user] fails to blind [M] with \the [src]!</span>")
+		M.interact_message(user,
+			SPAN_CLASS("disarm", "\The [user] fails to blind \the [M] with \the [src]!"),
+			SPAN_CLASS("disarm", "\The [user] fails to blind you with \the [src]!"),
+			SPAN_CLASS("disarm", "You fail to blind \the [M] with \the [src]!")
+		)
 	return 1
 
 

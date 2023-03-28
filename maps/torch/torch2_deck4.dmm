@@ -2172,16 +2172,14 @@
 "hj" = (
 /obj/structure/shuttle/engine/heater,
 /obj/structure/window/reinforced{
-	dir = 1;
-	health = 1e+006
+	dir = 1
 	},
 /turf/simulated/floor/plating,
 /area/shuttle/escape_pod6/station)
 "hk" = (
 /obj/structure/shuttle/engine/heater,
 /obj/structure/window/reinforced{
-	dir = 1;
-	health = 1e+006
+	dir = 1
 	},
 /turf/simulated/floor/plating,
 /area/shuttle/escape_pod7/station)
@@ -3401,7 +3399,7 @@
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
 	dir = 4
 	},
-/obj/item/device/radio/beacon,
+/obj/machinery/tele_beacon,
 /turf/simulated/floor/tiled/monotile,
 /area/hallway/primary/fourthdeck/aft)
 "lU" = (
@@ -3737,6 +3735,10 @@
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
 	},
+/obj/structure/dogbed{
+	name = "Steppy's bed"
+	},
+/mob/living/simple_animal/hostile/retaliate/gator/steppy,
 /turf/simulated/floor/tiled/monotile,
 /area/quartermaster/office)
 "mB" = (
@@ -5155,7 +5157,7 @@
 	d2 = 2;
 	icon_state = "1-2"
 	},
-/obj/item/device/radio/beacon,
+/obj/machinery/tele_beacon,
 /obj/effect/floor_decal/corner/paleblue{
 	dir = 9;
 	icon_state = "corner_white"
@@ -5413,7 +5415,7 @@
 	d2 = 8;
 	icon_state = "2-8"
 	},
-/obj/item/device/radio/beacon,
+/obj/machinery/tele_beacon,
 /turf/simulated/floor/tiled/monotile,
 /area/hallway/primary/fourthdeck/center)
 "sI" = (
@@ -5948,7 +5950,7 @@
 	dir = 1;
 	icon_state = "pipe-c"
 	},
-/obj/item/device/radio/beacon,
+/obj/machinery/tele_beacon,
 /turf/simulated/floor/tiled,
 /area/storage/primary)
 "ub" = (
@@ -10326,6 +10328,10 @@
 	},
 /turf/simulated/floor/tiled/dark,
 /area/hallway/primary/fourthdeck/aft)
+"Jz" = (
+/obj/structure/sign/poster/tegu_9,
+/turf/simulated/wall/prepainted,
+/area/quartermaster/storage/upper)
 "JA" = (
 /obj/machinery/atmospherics/unary/vent_scrubber/on{
 	dir = 4
@@ -37902,7 +37908,7 @@ MT
 Ou
 Qb
 YB
-Yf
+Jz
 Yf
 QI
 Yf

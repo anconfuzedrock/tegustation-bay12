@@ -9,7 +9,7 @@
 	penetration_modifier = 1.0
 	var/mob_passthrough_check = 0
 
-	muzzle_type = /obj/effect/projectile/bullet/muzzle
+	muzzle_type = /obj/effect/projectile/muzzle/bullet
 	miss_sounds = list('sound/weapons/guns/miss1.ogg','sound/weapons/guns/miss2.ogg','sound/weapons/guns/miss3.ogg','sound/weapons/guns/miss4.ogg')
 	ricochet_sounds = list('sound/weapons/guns/ricochet1.ogg', 'sound/weapons/guns/ricochet2.ogg',
 							'sound/weapons/guns/ricochet3.ogg', 'sound/weapons/guns/ricochet4.ogg')
@@ -130,7 +130,7 @@
 	distance_falloff = 4
 
 /obj/item/projectile/bullet/pistol/strong
-	fire_sound = 'sound/weapons/gunshot/gunshot_strong.ogg'
+	fire_sound = 'sound/weapons/gunshot/revolver.ogg'
 	damage = 50
 	penetration_modifier = 0.8
 	distance_falloff = 2.5
@@ -148,12 +148,18 @@
 
 //4mm. Tiny, very low damage, does not embed, but has very high penetration. Only to be used for the experimental SMG.
 /obj/item/projectile/bullet/flechette
-	fire_sound = 'sound/weapons/gunshot/gunshot_4mm.ogg'
+	fire_sound = 'sound/weapons/gunshot/smg.ogg'
 	damage = 23
 	penetrating = 1
 	armor_penetration = 70
 	embed = FALSE
 	distance_falloff = 2
+
+// Higher damage, less AP
+/obj/item/projectile/bullet/flechette/hp
+	fire_sound = 'sound/weapons/gunshot/smg_alt.ogg'
+	damage = 36
+	armor_penetration = 20
 
 /* shotgun projectiles */
 
@@ -197,6 +203,11 @@
 	damage = 40
 	armor_penetration = 35
 	penetration_modifier = 1
+
+/obj/item/projectile/bullet/rifle/t12
+	fire_sound = "gun_t12"
+	damage = 24
+	armor_penetration = 40
 
 /obj/item/projectile/bullet/rifle/shell
 	fire_sound = 'sound/weapons/gunshot/sniper.ogg'

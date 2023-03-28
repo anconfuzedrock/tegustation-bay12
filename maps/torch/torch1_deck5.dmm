@@ -48,12 +48,10 @@
 	},
 /obj/structure/table/rack,
 /obj/structure/window/reinforced{
-	dir = 1;
-	health = 1e+006
+	dir = 1
 	},
 /obj/structure/window/reinforced{
-	dir = 8;
-	health = 1e+006
+	dir = 8
 	},
 /obj/structure/window/reinforced{
 	dir = 4
@@ -1558,7 +1556,7 @@
 /turf/simulated/floor/tiled/techfloor/grid,
 /area/guppy_hangar/start)
 "cU" = (
-/obj/item/device/radio/beacon/anchored{
+/obj/machinery/tele_beacon{
 	level = 1
 	},
 /obj/machinery/atmospherics/unary/vent_pump/on{
@@ -1755,7 +1753,7 @@
 /turf/simulated/floor/tiled/monotile,
 /area/exploration_shuttle/airlock)
 "dk" = (
-/obj/item/device/radio/beacon/anchored{
+/obj/machinery/tele_beacon{
 	level = 1
 	},
 /turf/simulated/floor/tiled,
@@ -3010,8 +3008,7 @@
 "gi" = (
 /obj/structure/shuttle/engine/heater,
 /obj/structure/window/reinforced{
-	dir = 1;
-	health = 1e+006
+	dir = 1
 	},
 /obj/machinery/atmospherics/pipe/simple/visible/fuel{
 	dir = 6
@@ -3021,8 +3018,7 @@
 "gj" = (
 /obj/structure/shuttle/engine/heater,
 /obj/structure/window/reinforced{
-	dir = 1;
-	health = 1e+006
+	dir = 1
 	},
 /obj/machinery/atmospherics/pipe/manifold/visible/fuel{
 	dir = 4
@@ -3062,8 +3058,7 @@
 "gm" = (
 /obj/structure/shuttle/engine/heater,
 /obj/structure/window/reinforced{
-	dir = 1;
-	health = 1e+006
+	dir = 1
 	},
 /obj/machinery/atmospherics/pipe/manifold/visible/fuel{
 	dir = 8
@@ -5640,7 +5635,7 @@
 	d2 = 4;
 	icon_state = "1-4"
 	},
-/obj/item/device/radio/beacon,
+/obj/machinery/tele_beacon,
 /turf/simulated/floor/plating,
 /area/quartermaster/hangar)
 "mF" = (
@@ -8400,7 +8395,7 @@
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
 	},
-/obj/item/device/radio/beacon,
+/obj/machinery/tele_beacon,
 /turf/simulated/floor/tiled,
 /area/hallway/primary/fifthdeck/fore)
 "rP" = (
@@ -9225,8 +9220,7 @@
 /area/hallway/primary/fifthdeck/aft)
 "tR" = (
 /obj/structure/window/reinforced{
-	dir = 1;
-	health = 1e+006
+	dir = 1
 	},
 /obj/structure/window/reinforced{
 	dir = 8
@@ -9442,7 +9436,7 @@
 	d2 = 8;
 	icon_state = "4-8"
 	},
-/obj/item/device/radio/beacon,
+/obj/machinery/tele_beacon,
 /turf/simulated/floor/tiled/monotile,
 /area/hallway/primary/fifthdeck/aft)
 "uo" = (
@@ -10441,16 +10435,14 @@
 /obj/effect/floor_decal/industrial/hatch/yellow,
 /obj/machinery/r_n_d/protolathe,
 /obj/structure/window/reinforced{
-	dir = 1;
-	health = 1e+006
+	dir = 1
 	},
 /turf/simulated/floor/tiled/dark/monotile,
 /area/shuttle/petrov/rnd)
 "xC" = (
 /obj/structure/shuttle/engine/heater,
 /obj/structure/window/reinforced{
-	dir = 1;
-	health = 1e+006
+	dir = 1
 	},
 /obj/machinery/atmospherics/pipe/simple/visible/fuel{
 	dir = 10
@@ -11680,8 +11672,7 @@
 /area/exploration_shuttle/cargo)
 "Ch" = (
 /obj/structure/window/reinforced{
-	dir = 1;
-	health = 1e+006
+	dir = 1
 	},
 /obj/effect/floor_decal/industrial/warning{
 	dir = 1
@@ -12625,8 +12616,7 @@
 /area/maintenance/fifthdeck/aftport)
 "Fo" = (
 /obj/structure/window/reinforced{
-	dir = 1;
-	health = 1e+006
+	dir = 1
 	},
 /obj/machinery/chemical_dispenser/full,
 /obj/effect/floor_decal/industrial/outline/yellow,
@@ -12794,7 +12784,7 @@
 /obj/machinery/atmospherics/pipe/simple/hidden{
 	dir = 4
 	},
-/obj/item/device/radio/beacon/anchored{
+/obj/machinery/tele_beacon{
 	level = 1
 	},
 /obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{
@@ -15230,8 +15220,7 @@
 /obj/machinery/r_n_d/circuit_imprinter,
 /obj/item/reagent_containers/glass/beaker/sulphuric,
 /obj/structure/window/reinforced{
-	dir = 1;
-	health = 1e+006
+	dir = 1
 	},
 /obj/machinery/alarm{
 	dir = 8;

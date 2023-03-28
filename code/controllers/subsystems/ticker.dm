@@ -18,6 +18,8 @@ SUBSYSTEM_DEF(ticker)
 	var/list/bad_modes = list()     //Holds modes we tried to start and failed to.
 	var/revotes_allowed = 0         //How many times a game mode revote might be attempted before giving up.
 
+	var/list/round_start_events
+
 	var/end_game_state = END_GAME_NOT_OVER
 	var/delay_end = 0               //Can be set true to postpone restart.
 	var/delay_notified = 0          //Spam prevention.
@@ -28,6 +30,9 @@ SUBSYSTEM_DEF(ticker)
 	var/looking_for_antags = 0
 
 	var/secret_force_mode = "secret"
+
+	///Set to TRUE when an admin forcibly ends round.
+	var/forced_end = FALSE
 
 /datum/controller/subsystem/ticker/Initialize()
 	to_world("<span class='info'><B>Welcome to the pre-game lobby!</B></span>")
@@ -92,7 +97,10 @@ SUBSYSTEM_DEF(ticker)
 			if(job && job.create_record)
 				CreateModularRecord(H)
 
-	callHook("roundstart")
+	for(var/I in round_start_events)
+		var/datum/callback/cb = I
+		cb.InvokeAsync()
+	LAZYCLEARLIST(round_start_events)
 
 	spawn(0)//Forking here so we dont have to wait for this to finish
 		mode.post_setup() // Drafts antags who don't override jobs.
@@ -104,6 +112,15 @@ SUBSYSTEM_DEF(ticker)
 
 	if(!length(GLOB.admins))
 		send2adminirc("Round has started with no admins online.")
+
+/datum/controller/subsystem/ticker/proc/OnRoundstart(datum/callback/cb)
+	if(!HasRoundStarted())
+		LAZYADD(round_start_events, cb)
+	else
+		cb.InvokeAsync()
+
+/datum/controller/subsystem/ticker/proc/HasRoundStarted()
+	return GAME_STATE >= RUNLEVEL_GAME
 
 /datum/controller/subsystem/ticker/proc/playing_tick()
 	mode.process()
@@ -347,6 +364,9 @@ Helpers
 	return 0
 
 /datum/controller/subsystem/ticker/proc/game_finished()
+	if (forced_end)
+		return TRUE
+
 	if(mode.explosion_in_progress)
 		return 0
 	if(config.continous_rounds)
@@ -355,6 +375,9 @@ Helpers
 		return mode.check_finished() || (evacuation_controller.round_over() && evacuation_controller.emergency_evacuation) || universe_has_ended
 
 /datum/controller/subsystem/ticker/proc/mode_finished()
+	if (forced_end)
+		return TRUE
+
 	if(config.continous_rounds)
 		return mode.check_finished()
 	else
